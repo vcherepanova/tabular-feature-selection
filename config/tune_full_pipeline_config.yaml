@@ -1,0 +1,23 @@
+defaults:
+  - model: mlp
+  - model_downstream: mlp
+  - dataset: california_housing
+  - hyp: hyp_for_neural_network
+  - hyp_downstream: hyp_for_neural_network
+  - override hydra/job_logging: custom
+  - _self_
+
+
+hydra:
+  run:
+    dir: ./outputs/optuna/${name}/tuning-${model.name}-${dataset.name}-noise_${dataset.add_noise}-percent_${dataset.noise_percent}
+  job_logging:
+    handlers:
+      file:
+        filename: train.log
+
+train_log: train_log
+name: ''                                   # name of the experiment (for saving the results)
+mode: 'feature_selection'                  # mode for training a model. Options: ['downstream', 'feature_selection'].
+importance_path: feature_importances.pt    # if mode=='downstream' and importance_path is not None, then feature_importance will be used for selecting topk features
+topk:                                      # proportion of the most important features to be selected for training (when importance_path is not None and mode=='downstream')

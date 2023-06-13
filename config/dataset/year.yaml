@@ -1,0 +1,7 @@
+name: year
+source: local
+task: regression
+normalization: quantile
+y_policy: mean_std
+add_noise:
+noise_percent:

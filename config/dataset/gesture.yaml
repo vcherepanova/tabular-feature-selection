@@ -1,0 +1,7 @@
+name: gesture
+source: local
+task: multiclass
+normalization: quantile
+y_policy:
+add_noise:
+noise_percent:

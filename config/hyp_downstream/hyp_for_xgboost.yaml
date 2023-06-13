@@ -1,0 +1,10 @@
+save_period: -1
+seed: 1
+add_noise:
+delta_noise:
+model_arguments:
+  iterations: 2000
+  task_type: 'CPU'
+  thread_count: 10
+fit_arguments:
+  early_stopping_rounds: 1999

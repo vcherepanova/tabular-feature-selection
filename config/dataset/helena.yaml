@@ -1,0 +1,7 @@
+name: helena
+source: local
+task: multiclass
+normalization: standard
+y_policy:
+add_noise:
+noise_percent:

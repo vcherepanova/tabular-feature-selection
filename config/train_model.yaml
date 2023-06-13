@@ -1,0 +1,19 @@
+defaults:
+  - model: mlp                      # model architecture arguments (see config/model/model_name)
+  - dataset: california_housing     # characteristics of the dataset and pre-processing arguments (see config/dataset/dataset_name)
+  - hyp: hyp_for_neural_network     # hyperparameters for training models
+  - override hydra/job_logging: custom
+  - _self_
+
+hydra:
+  run:
+    dir: ./outputs/${name}/training-${model.name}-${dataset.name}-noise_${dataset.add_noise}-${dataset.noise_percent}
+  job_logging:
+    handlers:
+      file:
+        filename: train.log
+train_log: train_log
+name: ''                  # name of the experiment (for saving the results)
+mode: 'downstream'        # mode for training a model. Options: ['downstream', 'feature_selection'].
+importance_path:          # if mode=='downstream' and importance_path is not None, then feature_importance will be used for selecting topk features
+topk:                     # proportion of the most important features to be selected for training (when importance_path is not None and mode=='downstream')

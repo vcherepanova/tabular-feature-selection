@@ -1,0 +1,13 @@
+name: xgboost
+early_stopping_rounds: 50
+booster: 'gbtree'
+n_estimators: 2000
+n_jobs: -1
+tree_method: 'gpu_hist'
+max_depth:
+min_child_weight:
+subsample:
+learning_rate:
+colsample_bytree:
+gamma:
+lambda:
