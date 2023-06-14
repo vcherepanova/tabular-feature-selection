@@ -157,7 +157,7 @@ def objective(trial, cfg: DictConfig, trial_configs, trial_stats, trial_importan
 @hydra.main(config_path="config", config_name="tune_full_pipeline_config")
 def main(cfg):
     optuna_seed=10
-    n_optuna_trials = 1
+    n_optuna_trials = 100
 
     trial_stats = []
     trial_configs = []

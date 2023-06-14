@@ -39,21 +39,21 @@ def get_categories_full_cat_data(full_cat_data_for_encoder):
     )
 
 def get_data_locally(name, add_noise, noise_percent):
-    path_type_1_c = f'/cmlscratch/vcherepa/TabularDecisionBoundary/data/{name}/C_train.npy'
-    path_type_1_n = f'/cmlscratch/vcherepa/TabularDecisionBoundary/data/{name}/N_train.npy'
-    path_type_2_c = f'/cmlscratch/vcherepa/TabularDecisionBoundary/data/{name}/X_cat_train.npy'
-    path_type_2_n = f'/cmlscratch/vcherepa/TabularDecisionBoundary/data/{name}/X_num_train.npy'
+    path_type_1_c = f'/data/{name}/C_train.npy'
+    path_type_1_n = f'/data/{name}/N_train.npy'
+    path_type_2_c = f'/data/{name}/X_cat_train.npy'
+    path_type_2_n = f'/data/{name}/X_num_train.npy'
 
     targets = np.concatenate(
-        [np.load('/cmlscratch/vcherepa/TabularDecisionBoundary/data/{}/y_{}.npy'.format(name, part)) for part in ['train', 'val', 'test']])
+        [np.load('/data/{}/y_{}.npy'.format(name, part)) for part in ['train', 'val', 'test']])
     targets = pd.Series(targets, name='target')
 
     if os.path.exists(path_type_1_c) or os.path.exists(path_type_1_n):
-        path_template_c = '/cmlscratch/vcherepa/TabularDecisionBoundary/data/{}/C_{}.npy'
-        path_template_n = '/cmlscratch/vcherepa/TabularDecisionBoundary/data/{}/N_{}.npy'
+        path_template_c = '/data/{}/C_{}.npy'
+        path_template_n = '/data/{}/N_{}.npy'
     else:
-        path_template_c = '/cmlscratch/vcherepa/TabularDecisionBoundary/data/{}/X_cat_{}.npy'
-        path_template_n = '/cmlscratch/vcherepa/TabularDecisionBoundary/data/{}/X_num_{}.npy'
+        path_template_c = '/data/{}/X_cat_{}.npy'
+        path_template_n = '/data/{}/X_num_{}.npy'
 
     cat_path = path_template_c.format(name, 'train')
     if os.path.exists(cat_path):

@@ -106,9 +106,10 @@ def main(cfg: DictConfig):
                          ("test_stats", test_stats),
                          ("train_stats", train_stats),
                          ("val_stats", val_stats)])
-    with open(os.path.join("stats.json"), "w") as fp:
-        json.dump(stats, fp, indent=4)
-    log.info(json.dumps(stats, indent=4))
+    if cfg.mode=='downstream':
+        with open(os.path.join("stats.json"), "w") as fp:
+            json.dump(stats, fp, indent=4)
+        log.info(json.dumps(stats, indent=4))
 
 
     if cfg.mode=='feature_selection':

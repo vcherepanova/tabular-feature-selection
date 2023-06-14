@@ -112,7 +112,7 @@ def main(cfg: DictConfig):
 
 	####################################################
 	#  Train and Evaluate
-	log.info(f"Loading GBDT model...")
+	log.info(f"Loading {cfg.model.name} model...")
 	model = get_classical_model(cfg)
 	if cfg.model.name=='xgboost':
 		model.fit(X_train, y_train, cfg.hyp.fit, eval_set = [(X_val, y_val)])
@@ -137,10 +137,10 @@ def main(cfg: DictConfig):
 							 ("train_stats", train_stats),
 							 ("val_stats", val_stats)])
 
-	
-	with open(os.path.join("stats.json"), "w") as fp:
-		json.dump(stats, fp, indent=4)
-	log.info(json.dumps(stats, indent=4))
+	if cfg.mode=='downstream':
+		with open(os.path.join("stats.json"), "w") as fp:
+			json.dump(stats, fp, indent=4)
+		log.info(json.dumps(stats, indent=4))
 
 	####################################################
 	#  Feature Selection

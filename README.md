@@ -27,7 +27,7 @@ We include the environment requirements in requirements.txt.
 - ```train_deep_model.py``` uses ```config/train_model.yaml``` config for training a specified deep tabular model (MLP or FT-Transformer) on a specified dataset (see arguments in ```config/train_model.yaml```)
 - ```train_classical.py``` uses ```config/train_model.yaml``` config for training a specified classical model (Random Forest, XGBoost, Linear/Logistic Regression or Univariate Statistical test)
 - ```tune_baseline.py``` uses ```config/tune_config.yaml``` config for tuning the hyperparameters of a model on a specified dataset (see arguments in ```config/train_model.yaml```)
-- ```tune_baseline.py``` uses ```config/tune_full_pipeline_config.yaml``` config for tuning the hyperparameters of upstream feature selection model and downstream model simultaneously with respect to the downstream performance (see arguments in ```config/tune_full_pipeline_config.yaml```)
+- ```tune_full_pipeline.py``` uses ```config/tune_full_pipeline_config.yaml``` config for tuning the hyperparameters of upstream feature selection model and downstream model simultaneously with respect to the downstream performance (see arguments in ```config/tune_full_pipeline_config.yaml```)
 
 ## How to use the code
 ### No Hyperparameter tuning
@@ -49,7 +49,7 @@ Results of this job will be saved in stats.json file in the folder specified in 
 
 ### Hyperparameter tuning
 
-1. Tune the hyperparameters of FT-Transformer model on California Housing dataset with 50% corrupted features:
+1. Tune the hyperparameters of FT-Transformer model on California Housing dataset with 50% corrupted features and no feature selection:
 
 ```python3 tune_baseline.py mode=downstream model=ft_transformer dataset=california_housing name=tune_ft_ch hyp=hyp_for_neural_network dataset.add_noise=corrupted_feats dataset.noise_percent=0.5```
 
@@ -61,3 +61,21 @@ This job will save the best performing hyperparameters in best_config.json, resu
 
 This job will save the best performing hyperparameters of both upstream feature selection and downstream models as well as performance stats of their combination. 
 More examples can be found in the ```launch``` folder. 
+
+## How to reproduce results in the main tables 
+
+1. First, tune the hyperparameters of both feature selection and downstream models for each fs_method-model-dataset configuration:
+
+```python3 tune_full_pipeline.py model={FS MODEL} model_downstream={DOWNSTREAM MODEL} dataset={DATASET NAME} name={NAME OF EXPERIMENT} hyp={CONFIG FOR FS MODEL} hyp_downstream={CONFIG FOR DOWNSTREAM MODEL} dataset.add_noise={NOISE SETUP} dataset.noise_percent={% OF NOISE IN DATASET} hyp.regularization={FS REGULARIZATION} topk={% OF FEATURES TO SELECT}```
+
+For example for XGBoost feature selection and downstream MLP model run: 
+
+```python3 tune_full_pipeline.py model=xgboost model_downstream=mlp dataset=california_housing name=xgboost_mlp hyp=hyp_for_xgboost hyp_downstream=hyp_for_neural_network dataset.add_noise=corrupted_feats dataset.noise_percent=0.5 topk=0.5```
+
+2. Then, run training job for the best hyperparameters for 10 different seeds:
+
+```python3 run_full_pipeline.py --multirun model=xgboost model_downstream=mlp dataset=california_housing name=xgboost_mlp hyp=hyp_for_xgboost hyp_downstream=hyp_for_neural_network dataset.add_noise=corrupted_feats dataset.noise_percent=0.5 topk=0.5 hyp.seed=0,1,2,3,4,5,6,7,8,9```
+
+This script loads the ```best_config.json``` file and runs feature selection and downstream models with the specified hyperparameters for 10 seeds. Results are saved in ```final_stats.json``` files in folders corresponding to the seed number in the same directory. 
+
+Please, find more examples in ```launch/feature_selection_California_Housing.sh```
