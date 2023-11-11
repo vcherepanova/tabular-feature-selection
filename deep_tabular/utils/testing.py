@@ -50,7 +50,7 @@ def test_default(net, testloader, task, device):
     return scores
 
 
-def get_feat_importance_deeplasso(net, testloader, criterion, device ):
+def get_feat_importance_deeplasso(net, testloader, criterion, device):
     net.eval()
     grads = []
     for batch_idx, (inputs_num, inputs_cat, targets) in enumerate(testloader):
