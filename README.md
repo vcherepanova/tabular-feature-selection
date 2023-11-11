@@ -62,6 +62,7 @@ Find the implementation of our novel Deep Lasso regularizer in ```deep_lasso.py`
 ## How to use the code
 ### Training downstrem deep tabular models
 To train a deep tabular model, such as an MLP or FT-Transformer, on a dataset containing extraneous features, use the ```train_deep_model.py``` script. For instance, to train an MLP on the California Housing dataset with 50% of the features being extraneous second-order features, execute the following command:
+
 ```python3 train_deep_model.py mode=downstream dataset=california_housing name=no_fs model=mlp hyp=hyp_for_neural_network dataset.add_noise=secondorder_feats dataset.noise_percent=0.5```
 
 Results of this job will be saved in ```stats.json``` file, located in the directory specified in the ```config/train_model.yaml``` file.
