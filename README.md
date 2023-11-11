@@ -84,6 +84,7 @@ To perform feature selection with deep learning-based algorithms (like Deep Lass
 ### Training downstream deep tabular models on selected features 
 
 To leverage pre-computed feature importances, specify the path using ```importance_path=feature_importances.pt``` and indicate the proportion of the most significant features to include in the dataset using ```topk``` argument:
+
 ```python3 train_deep_model.py mode=downstream dataset=california_housing name=ft_transformer_fs_xgboost model=ft_transformer hyp=hyp_for_neural_network dataset.add_noise=secondorder_feats dataset.noise_percent=0.5 importance_path=feature_importances.pt topk=0.5```
 
 ### Hyperparameter tuning for the downstream model 
